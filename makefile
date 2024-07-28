@@ -2,7 +2,7 @@ CC = gcc
 CFLAGS = -Wall
 SRC_DIR = src
 BUILD_DIR = build
-EXECUTABLE = itp-db
+EXECUTABLE = db
 
 SOURCE_FILES = $(wildcard $(SRC_DIR)/*.c)
 
