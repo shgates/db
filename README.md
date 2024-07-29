@@ -1,7 +1,7 @@
 # Projeto de ITP - Sistema de Gerenciammento de Banco de dados
 
 ## Contribuidores
-`Felipe Baraúna`
+>*Felipe Baraúna*
 
 ## Requisitos
 - [git](https://git-scm.com/) 
