@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall
+CFLAGS = -Wall -Wextra -Werror
 SRC_DIR = src
 BUILD_DIR = build
 EXECUTABLE = db
