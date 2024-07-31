@@ -1,5 +1,7 @@
 #include <stdio.h>
 
+/* PIPOCA COM SAL */
+
 void display_user_arrow() { printf("\n»» "); }
 
 void display_menu_message() { puts("Welcome to the Database"); }
