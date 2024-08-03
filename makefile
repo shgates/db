@@ -2,7 +2,7 @@ CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 SRC_DIR = src
 BUILD_DIR = build
-EXECUTABLE = db
+EXECUTABLE = itp-db
 
 SOURCE_FILES = $(wildcard $(SRC_DIR)/*.c)
 
@@ -10,7 +10,7 @@ OBJECTS = $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(SOURCE_FILES))
 
 .PHONY: all clean cleandb
 
-all: clean $(BUILD_DIR) $(EXECUTABLE)
+all: clean cleandb $(BUILD_DIR) $(EXECUTABLE)
 
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
@@ -26,5 +26,8 @@ clean:
 
 cleandb:
 	rm -rf db/*
-	touch db/ListOfTables.txt
+	if [ ! -d "db" ]; then \
+        mkdir db; \
+	fi
+	touch db/listoftables.txt
 
