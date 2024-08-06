@@ -2,6 +2,8 @@
 
 ## Contribuidores
 >*Felipe Baraúna*
+>
+>*Alison Soares*
 
 ## Requisitos
 - [git](https://git-scm.com/) 
