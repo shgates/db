@@ -2,11 +2,9 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "create.h"
-#include "list.h"
 #include "messages.h"
+#include "table.h"
 #include "utils.h"
-#include "ërrors.h"
 
 int main() {
     display_menu_message();
@@ -41,7 +39,7 @@ int main() {
             puts("Type the name of the table to create");
             display_user_arrow();
             scanf(" %s", user_input);
-            enum Errors has_err = create_table(user_input);
+            enum Errors has_err = create_table(user_input, strlen(user_input));
             if (has_err != 0) {
             }
         }

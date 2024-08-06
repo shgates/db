@@ -1,4 +1,4 @@
-# Projeto de ITP - Sistema de Gerenciammento de Banco de dados
+# Projeto de ITP - Sistema de Gerenciamento de Banco de Dados (SGBD)
 
 ## Contribuidores
 >*Felipe Baraúna*
@@ -22,5 +22,5 @@ make
 
 Rode o projeto
 ```bash
-./db
+./itp-db
 ```
