@@ -3,16 +3,16 @@
 ## 1. Criar um tabela
 
 a. os tipos de dados para as colunas poderão ser os tipos primitivos em
-C ( char, int, float e double) e strings 
-b. os valores deverão ser armazenados em arquivo 
+C ( char, int, float e double) e strings -> Feito 
+b. os valores deverão ser armazenados em arquivo -> Feito 
 c. na criação da tabela deverá ser solicitado um nome de coluna para
-ser a chave primária 
+ser a chave primária -> Feito 
   - i. a chave primária deverá ser obrigatoriamente do tipo inteiro
-  sem sinal 
+  sem sinal -> Feito 
 
 ## 2. Listar todas as tabelas
 
-a. deverá mostrar para o usuário as tabelas existentes 
+a. deverá mostrar para o usuário as tabelas existentes -> Feito 
 
 ## 3. Criar uma nova linha na tabela
 

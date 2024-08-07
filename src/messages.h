@@ -1,3 +1,7 @@
+
+#ifndef MESSAGES_H
+#define MESSAGES_H
+
 // Displays an arrow before the user input
 void display_user_arrow();
 
@@ -16,3 +20,5 @@ void display_invalid_input_message();
 
 // Display credits message
 void display_credits_message();
+
+#endif
