@@ -1,0 +1,3 @@
+Nome da Coluna: Nome - 228 pP
+Parametro De Inicial: 1 pP
+Bits para Registro: 10 pXP

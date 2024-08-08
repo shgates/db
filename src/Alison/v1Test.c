@@ -7,6 +7,7 @@ typedef  struct {
     int parametro_Inicial;
     int bitRegistro;
     int caracteresTotais;
+    int ultimoIndice;
 }ColunaInformacao;
 
 
@@ -102,7 +103,7 @@ int main () {
             printf("Parametro De Inicial: %d\n",tabelaAUX[i].parametro_Inicial);
             printf("Bits para Registro: %d\n",(tabelaAUX[i].bitRegistro));
             
-        }
+        }}
     
 
 
@@ -116,9 +117,9 @@ int main () {
     }
 
     for (i = 0; i < nColunas; i++) {
-        fprintf(arquivo, "Nome da Coluna: %d - %s&*\n",tabelaAUX[i].caracteresTotais,tabelaAUX[i].nome_Coluna);
-        fprintf(arquivo, "Parametro De Inicial: %d&*\n",tabelaAUX[i].parametro_Inicial);
-        fprintf(arquivo, "Bits para Registro: %d&*\n",tabelaAUX[i].bitRegistro);
+        fprintf(arquivo, "Nome da Coluna: %s - %d pP\n",tabelaAUX[i].nome_Coluna,tabelaAUX[i].caracteresTotais);
+        fprintf(arquivo, "Parametro De Inicial: %d pP\n",tabelaAUX[i].parametro_Inicial);
+        fprintf(arquivo, "Bits para Registro: %d pXP\n",tabelaAUX[i].bitRegistro);
     }
 
     fclose(arquivo);
@@ -126,8 +127,84 @@ int main () {
     // Liberando a memória alocada
     free(tabelaAUX);
 
+
+    /* -=-=-=-=-=-=-=-=-=- LEITURA DO ARQUIVO -=-=-=-=-=-=-=-=-=- */
+
+    int novas_linhas = 1;
+ 
+
+
+    /* =-=-=-=- CRIANDO MATRIZ DINAMICA =-=-=-=-  */
+
+    char **matrizDeRetorno = (char **)malloc(1 * sizeof(char *)); // Reservando linhas
+    matrizDeRetorno[0] = (char *)malloc(150 * sizeof(char)); // Reservando Colunas
+
+    /* =-=-=-=-= Abrindo Aquivo e Iniciando processo de leitura =-=-=-=-=-= */
+
+    FILE *arquivoREC = fopen(nome_arquivo, "r");
+
+     if (arquivoREC == NULL) {
+        printf("Erro ao abrir o arquivo %s\n", nome_arquivo);
+        return 1;
+    }
+
+    printf("Iniciando Processo de Leitura do arquivo\n");
+
+
+    for (i=0;i<150;i++){
+
+
+      if (fscanf(arquivoREC, "%c", &matrizDeRetorno[novas_linhas - 1][i]) != 1) {
+        matrizDeRetorno[novas_linhas - 1][i] = '\0';} // Marca o final da string caso não consiga ler mais caracteres;
+
+      printf("Caractere lido: %c\n",matrizDeRetorno[novas_linhas - 1][i]);
+
+      if(matrizDeRetorno[novas_linhas -1 ][i] == 'P' && i > 0 && matrizDeRetorno[novas_linhas -1][i-1] == 'p'){
+        printf("ENTORU NO VERIFICADOR DE QUEBRA DE LINHAS\n");
+        matrizDeRetorno[novas_linhas - 1][i+1] = '\0';
+
+            novas_linhas++;
+  
+           // Redimensionando o número de linhas
+           printf("O novo numero de linhas sera: %d\n",novas_linhas);
+           printf("O indice dessa nova linha sera: %d\n",novas_linhas - 1);
+            matrizDeRetorno = (char **)realloc(matrizDeRetorno, novas_linhas * sizeof(char *));
+             for (int i = (novas_linhas - 1); i < novas_linhas; i++) {
+              printf("Valor de i: %d\n", i);
+              matrizDeRetorno[novas_linhas -1] = (char *)malloc(150 * sizeof(char));}}
+
+
+      if(matrizDeRetorno[novas_linhas - 1][i] == 'P'
+       && i > 2 && 
+       matrizDeRetorno[novas_linhas - 1][i-1] == 'X' 
+       && matrizDeRetorno[novas_linhas - 1][i-2] == 'p')
+       {  printf("SINAL DE PARADA\n");
+            matrizDeRetorno[novas_linhas - 1][i] = '\0';
+            break;}
+              
+              
+              
+};
+
+fclose(arquivoREC);
+
+
+/* =-=-=-=-=-= INICANDO PROCESSO DE LEITURA DA MATRIZ =-=-=-=-=-=*/
+
+    printf("Iniciando Processo de Leitura da Matriz\n");
+
+    int a;
+   
+     for (a = 1; a < novas_linhas - 1; a++) {
+        printf("a=%d\n",a);
+        for (i = 0; matrizDeRetorno[a][i] != '\0';i++){
+        printf("%c",matrizDeRetorno[a][i]);}
+    }
+
+    free(matrizDeRetorno);
+
+    fclose(arquivoREC);
+    
+
     return 0;
-}}
-
-
-
+}
