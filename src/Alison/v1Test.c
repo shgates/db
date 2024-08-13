@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <direct.h>
+
 typedef  struct {
     char nome_Coluna[50];
     int parametro_Inicial;
@@ -24,7 +26,7 @@ int main () {
     int i,parametro,ultimoParametro=0,indiceDaColuna = 0;
     int nCaracteres = 0,nColunas = 0;
 
-        /* 
+    /* 
 
         i) O 'ultimoParametro' descreve o numeral que representa o limite de uma coluna.
         Limite nesse caso se refere até onde os caracteres de uma coluna se estende.
@@ -32,7 +34,62 @@ int main () {
         ii) A variavel 'parametro' norteia se o úsuario que continuar ou não inserindo colunas.
 
         */
-    ColunaInformacao* tabelaAUX = NULL;
+
+
+    /* =--=-=-=-=-=-=-=- CRIANDO DIRETORIO DA TABELA -=-=-=-=-=-=-=-= */
+
+    // Nome da Tabela a ser criada
+    char nomeDiretorio[200];
+    printf("Digite o Nome da Tabela:");
+    fgets(nomeDiretorio,99,stdin);
+    nomeDiretorio[strcspn(nomeDiretorio, "\n")] = 0;
+    const char *dirName = nomeDiretorio;
+
+    // Cria o diretório
+    int result = _mkdir(dirName);
+
+    if (result == 0) {
+        printf("Diretorio criado com sucesso.\n");
+    } else {
+        perror("Erro ao criar o diretorio");
+    }
+
+    char caminhoAtual[1024]; // Para armazenar o caminho do diretório atual
+    char caminhoCompleto[1024]; // Para armazenar o caminho completo do novo diretório
+    
+
+    // Obtém o caminho do diretório onde o programa está sendo executado
+    if (getcwd(caminhoAtual, sizeof(caminhoAtual)) != NULL) {
+        // Combina o caminho atual com o nome do novo diretório
+        snprintf(caminhoCompleto, sizeof(caminhoCompleto), "%s/%s", caminhoAtual, dirName);
+        
+        // Mostra o caminho completo do novo diretório
+        printf("O caminho completo do novo diretório é: %s\n", caminhoCompleto);
+    } else {
+        // Exibe uma mensagem de erro se não conseguir obter o caminho atual
+        perror("Erro ao obter o caminho atual");
+        return 1;
+    }
+
+    /* =-=-=-=-=-=-=-=- CRIANDO ARQUIVO PARA CADA COLUNA =-=-=-=-=-=-=-=- */
+
+    char diretorioCompleto[150];
+    fgets(nome_Tabela,149,stdin);
+
+    // Nome do diretório e do arquivo
+    const char *caminho = "C:\\Caminho\\Para\\Diretorio\\meu_arquivo.txt";
+
+    // Abre o arquivo no modo de escrita
+    FILE *file = fopen(caminho, "w");
+    
+    if (file == NULL) {
+        perror("Erro ao criar o arquivo");
+        return 1;
+    }
+
+    
+
+    /* ColunaInformacao* tabelaAUX = NULL;
 
     printf("DIGITE O NOME DA TABELA:\n");
     fgets(nome_Tabela,99,stdin);
@@ -40,7 +97,7 @@ int main () {
 
     char nome_arquivo[100]; // Array para armazenar o nome do arquivo completo
     // Cria o nome do arquivo dinamicamente
-    sprintf(nome_arquivo, "%s.txt", nome_Tabela);
+    sprintf(nome_arquivo, "%s.txt", nome_Tabela); */
     
 
     while (1){
