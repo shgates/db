@@ -25,11 +25,14 @@ int main() {
         perror("Erro ao criar o diretorio");
     }
 
+    /* -=-=-=-=-=-=-=- CRIANDO ARQUIVO DENTRO DO DIRETORIO -=-=-=-=-=-=-=- */
+
     char caminhoAtual[1024]; // Para armazenar o caminho do diretório atual
     char caminhoCompleto[1024]; // Para armazenar o caminho completo do novo diretório
 
     char colunaNome[200];
     char newnameColun[200];
+
     printf("DIGITE O NOME DA COLUNA:");
     fgets(colunaNome,199,stdin);
     colunaNome[strcspn(colunaNome, "\n")] = '\0'; // Remove o caractere de nova linha
@@ -50,37 +53,30 @@ int main() {
         return 1;
     }
 
+    /* =-=-=-=-=-=-=-=-= ADAPTANDO DIRETORIO + NOME DA COLUNA =-=-=-=-=-=-=-=-= */
+
    
 
     int i;
     int tamanho = sizeof(caminhoCompleto) / sizeof(caminhoCompleto[0]);
 
-    /*printf("DENTRO DO FOR\n");
-
-    for(i=0;i<tamanho+1;i++){
-        if (caminhoCompleto[i] == '\0'){
-            break;
-        }
-        printf("%c",caminhoCompleto[i]);
-    }*/
-
     printf("\n");
     char copy[1024];
-    int param = 0;
+    int parametro = 0;
 
         for(i=0;i<tamanho+1;i++){
     
         if (caminhoCompleto[i] == ('\\') ){
-            copy[param] = '\\';
-            param++;
-            copy[param] = '\\';
-            param++;
+            copy[parametro] = '\\';
+            parametro++;
+            copy[parametro] = '\\';
+            parametro++;
 
              printf("CAIU NA CONDICAO\n");
         }
         else{
-            copy[param] = caminhoCompleto[i];
-            param++;
+            copy[parametro] = caminhoCompleto[i];
+            parametro++;
         }};
 
         // Nome do diretório e do arquivo
@@ -92,19 +88,7 @@ int main() {
         if (file == NULL) {
             perror("Erro ao criar o arquivo");
             return 1;
-        }
-
-        /*printf("DENTRO DO SEGUNDO FOR\n");
-
-         for(i=0;i<tamanho+1;i++){
-
-            if (copy[i] == '\0'){
-                printf("\nVAI DE BREAK\n");
-                break;}
-
-            printf("%c",copy[i]);}*/
-
-
+        };
 
     return 0;
 }
