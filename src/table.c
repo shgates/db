@@ -371,4 +371,4 @@ enum Result update_table_row(struct Table* t) {
 void list_data_in_table() {}
 
 // Alison
-void search_data() {}
+void search_data(char table_name[], void* value, enum Option option) {}

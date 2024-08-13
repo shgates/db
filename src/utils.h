@@ -18,6 +18,11 @@ enum Type {
     CHAR,
     STRING,
 };
+
+enum Option {
+
+};
+
 /*
  * checks if user input matches with a given command
  */

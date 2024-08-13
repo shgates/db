@@ -54,4 +54,6 @@ void print_data(struct Column col, enum Type type, size_t idx);
 
 enum Result update_table_row(struct Table* t);
 
+void search_data(char table_name[], void* value, enum Option option);
+
 #endif
