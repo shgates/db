@@ -7,6 +7,7 @@ enum Result {
     SUCCESS,
     ERROR,
     TABLE_NOT_CREATED,
+    TABLE_NOT_UPDATED,
 };
 
 enum Type {

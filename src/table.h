@@ -10,6 +10,7 @@
 #define MAX_NAME_SIZE 100
 #define MAX_COLUMN_NAME 100
 #define MAX_STRING_SIZE 100
+#define MAX_REGISTER_SIZE 100
 
 struct Column {
     char name[MAX_COLUMN_NAME];
@@ -18,12 +19,12 @@ struct Column {
     bool is_empty;
 
     union {
-        unsigned int data_uint;
-        int data_int;
-        float data_float;
-        double data_double;
-        char data_char;
-        char data_string[MAX_STRING_SIZE];
+        unsigned int data_uint[MAX_REGISTER_SIZE];
+        int data_int[MAX_REGISTER_SIZE];
+        float data_float[MAX_REGISTER_SIZE];
+        double data_double[MAX_REGISTER_SIZE];
+        char data_char[MAX_REGISTER_SIZE];
+        char data_string[MAX_REGISTER_SIZE][MAX_STRING_SIZE];
     };
 };
 
@@ -48,5 +49,9 @@ int table_already_exists(char table_name[]);
 enum Result add_data(char table_name[]);
 
 enum Result delete_data(char table_name[], unsigned int pk);
+
+void print_data(struct Column col, enum Type type, size_t idx);
+
+enum Result update_table_row(struct Table* t);
 
 #endif
