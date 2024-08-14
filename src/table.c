@@ -12,22 +12,35 @@
 #define MAX_TABLE_QUANTITY 100
 #define MAX_TABLE_NAME_SIZE 100
 
+// Formatação de entrada (ex: fscanf) do arquivo listoftables
+// (Nome, Numero de linhas, Numero de Colunas)
 const char* TABLE_LIST_FORMAT_IN = "%s %u %u\n";
+
+// Formatação de saida (ex: fprintf) do arquivo listoftables
+// (Nome, Numero de linhas, Numero de Colunas)
 const char* TABLE_LIST_FORMAT_OUT = "%s %u %u\n";
+
+// Formatação de uma coluna de tabela
 const char* TABLE_COLUMN_FORMAT = "%s %s |";
 
+// Formatação de entrada (ex: fscanf) de um registro de uma tabela
 const char* TABLE_ROW_FORMAT_IN = "%[^|]";
+// Formatação de saida (ex: fprintf) de um registro de uma tabela
 const char* TABLE_ROW_FORMAT_OUT = "%s|";
 
+// Variável buffer para manipular o caminho de uma tabela (Sem ser o arquivo
+// listoftables.txt)
 static char FILE_PATH[MAX_PATH_SIZE];
 
+// Caminho do txt principal contendo dados sobre nome, numero de linhas e numero
+// de colunas de cada tabela do db
 static char MAIN_FILE_PATH[] = "./db/listoftables.txt";
 
-// função usada para persistir uma tabela nova
+// função usada para persistir uma tabela nova -> Usado dentro da função
+// create_table
 enum Result persist_table(struct Table* t) {
-    char path[MAX_PATH_SIZE];
-    sprintf(path, "./db/%s.txt", t->name);
-    FILE* f = fopen(path, "w");
+    sprintf(FILE_PATH, "./db/%s.txt", t->name);
+    FILE* f = fopen(FILE_PATH, "w");
     if (f == NULL) {
         printf("Um erro ocorreu ao tentar criar a tabela %s.\n", t->name);
         return ERROR;
