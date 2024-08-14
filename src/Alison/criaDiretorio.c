@@ -218,10 +218,14 @@ int main() {
     scanf("%d",&ncaracteres);
 
     ColunaInformacao colunaN;
-
+if (ultimo_indice_geral == 0){
+    colunaN.indice_inicial = ultimo_indice_geral+5;
+    colunaN.numero_caracteres = ncaracteres;
+    colunaN.ultimo_indice = ultimo_indice_geral + ncaracteres;}
+else {
     colunaN.indice_inicial = ultimo_indice_geral;
     colunaN.numero_caracteres = ncaracteres;
-    colunaN.ultimo_indice = ultimo_indice_geral + ncaracteres;
+    colunaN.ultimo_indice = ultimo_indice_geral + ncaracteres;}    
 
     ultimo_indice_geral = ultimo_indice_geral + ncaracteres + 1;
 
@@ -244,6 +248,12 @@ int main() {
     printf("indice incial: %d\n",colunaN.indice_inicial);
     printf("Bits para Registro: %d\n",colunaN.numero_caracteres);
     printf("Ultimo indice: %d\n",colunaN.ultimo_indice);
+
+    FILE *arquivoInfoMais = fopen("InfoMais", "a+");
+    if (arquivo == NULL) {
+        printf("Erro ao abrir o arquivo InfoMais.\n");
+        return 1;
+    }
 
 
 
@@ -271,7 +281,6 @@ int main() {
  
    // =-=-=-=- CRIANDO TABELA COM INFORMAÇÕES =-=-=-=-  
 
-   
 
     // =-=-=-=-= Abrindo Aquivo e Iniciando processo de leitura =-=-=-=-=-= 
 
@@ -305,51 +314,10 @@ int main() {
     int numero02 = atoi(segundo_parametro);
     int numero03 = atoi(terceiro_parametro);
 
-     printf("PRIMEIRO: %d\n", numero01);
+    printf("PRIMEIRO: %d\n", numero01);
     printf("SEGUNDO: %d\n", numero02);
     printf("TERCEIRO: %d\n", numero03);
 
-
-
-
-    /*int i,j;
-    printf("Iniciando Processo de Leitura da Matriz\n");
-
-    for (i = 0; i < novas_linhas-1; i++) {
-    for (j = 0; matrizDeRetorno[i][j] != '\0'; j++) {
-        printf("%c", matrizDeRetorno[i][j]);
-    }
-    printf("PROXIMA LINHA\n");  // Para imprimir uma nova linha entre as linhas da matriz
-}
-
-printf("Terminando Processo de Leitura da Matriz\n");
-
-
-    for (i = 0; i < novas_linhas; i++) {
-    free(matrizDeRetorno[i]);}
-
-    free(matrizDeRetorno);*/
- 
-
-    /* =-=-=-=-=-= INICANDO PROCESSO DE LEITURA DA MATRIZ =-=-=-=-=-=*/
-
-    /*printf("Iniciando Processo de Leitura da Matriz\n");
-    printf("%c",matrizDeRetorno[1][1]);
-    printf("%c",matrizDeRetorno[1][2]);
-    printf("%c",matrizDeRetorno[1][3]);
-    printf("%c",matrizDeRetorno[1][4]);
-    printf("%c",matrizDeRetorno[1][5]);
-
-    printf("PAREI");
-
-    int variavelD,i;
-
-     for (variavelD = 0; variavelD < novas_linhas - 1; variavelD++) {
-        for (i = 0; matrizDeRetorno[variavelD][i] != '\0';i++){
-        printf("%c",matrizDeRetorno[variavelD][i]);}
-    }
-
-    free(matrizDeRetorno);*/
 
     return 0;
 }
