@@ -390,6 +390,7 @@ void search_data(char table_name[], double value, enum Option option) {
      * funcionando )
      * */
 
+    printf("%s %lf\n", table_name, value);
     switch (option) {
         case NUMERICAL:
             // comparação numerica
