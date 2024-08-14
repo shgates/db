@@ -6,4 +6,5 @@ Criar funcao de listar todos os dados em uma tabela especifica
 
 -- Depois
 Criar funcionalidade de search data
+(Inicialmente fazer comparação numerica)
 Criar comando de help e creditos

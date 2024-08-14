@@ -367,8 +367,35 @@ enum Result update_table_row(struct Table* t) {
     return SUCCESS;
 }
 
-// Para fazer
+// Vou fazer
 void list_data_in_table() {}
 
 // Alison
-void search_data(char table_name[], void* value, enum Option option) {}
+void search_data(char table_name[], double value, enum Option option) {
+    /*
+     * 1 - Usuário deverá informar o nome da tabela onde realizará a pesquisa
+     * ( Checar tabela com a variavel table_name )
+     * 2 - Sistema deverá fornecer as colunas disponíveis na tabela o usuário
+     * deverá selecionar uma delas ( Ler as colunas no txt e listar para o
+     * usuario ) 3- Sistema deverá solicitar o valor para pesquisar,
+     * disponibilizando algumas opções
+     * ( Ler o valor para pesquisa do usuário, a principio um valor double )
+     * i- valores maior que o valor informado
+     * ii- valores maior ou igual que o valor informado
+     * iii- valores igual o valor informado
+     * iv-valores menor que o valor informado
+     * v- valores menor ou igual que o valor informado
+     * vi- valores próximo ao valor informado (se aplica apenas se a coluna for
+     * do tipo string) ( Fazer depois que a pesquisa de valores numeros estiver
+     * funcionando )
+     * */
+
+    switch (option) {
+        case NUMERICAL:
+            // comparação numerica
+            break;
+        case TEXT:
+            // comparação de texto
+            break;
+    }
+}

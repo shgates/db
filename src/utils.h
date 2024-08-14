@@ -19,8 +19,10 @@ enum Type {
     STRING,
 };
 
+// enum de opções para a função de pesquisa
 enum Option {
-
+    NUMERICAL,  // Valores numéricos (UINT, INT, FLOAT, DOUBLE)
+    TEXT        // Valores de texto (CHAR, STRING)
 };
 
 /*
