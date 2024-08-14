@@ -5,11 +5,10 @@
 #include <direct.h>
 
 typedef  struct {
-    char nome_Coluna[50];
-    int parametro_Inicial;
-    int bitRegistro;
-    int caracteresTotais;
-    int ultimoIndice;
+    
+    int indice_inicial;
+    int numero_caracteres;
+    int ultimo_indice;
 }ColunaInformacao;
 
 

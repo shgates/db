@@ -1,3 +1,0 @@
-Parametro De Inicial: 0
-Bits para Registro: 8
-Ultimo indice: 8
