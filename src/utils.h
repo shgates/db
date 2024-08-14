@@ -7,6 +7,7 @@ enum Result {
     SUCCESS,
     ERROR,
     TABLE_NOT_CREATED,
+    TABLE_NOT_UPDATED,
 };
 
 enum Type {
@@ -17,6 +18,13 @@ enum Type {
     CHAR,
     STRING,
 };
+
+// enum de opções para a função de pesquisa
+enum Option {
+    NUMERICAL,  // Valores numéricos (UINT, INT, FLOAT, DOUBLE)
+    TEXT        // Valores de texto (CHAR, STRING)
+};
+
 /*
  * checks if user input matches with a given command
  */
