@@ -18,6 +18,9 @@ char delete_Row(char* chavePrimaria, char *table, int nRows) {
     /*Partindo da premissa que table é uma matriz, o seguinte for serve somente para recuperar a linha
     a qual o registro com a chave primaria está */
     for (i=1;i<nRows;i++){
+        //Ainda faltanto reallocar numero de linhas
+        if (confirm = tamanhoChave){break;}
+
      for (j=0;j<150;j++){
         if (confirm = tamanhoChave){break;}
         
