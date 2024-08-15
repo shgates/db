@@ -18,11 +18,34 @@ void criarTabela (const char *nomeTabela){
         fclose(arquivoInfo);
     }}
 
+
+
 // Função para criar uma coluna (subpasta)
 void criarColuna(const char *nomeTabela, const char *nomeColuna) {
     char caminho[1024];
     snprintf(caminho, sizeof(caminho), "%s/%s", nomeTabela, nomeColuna);
     mkdir(caminho);
+}
+
+void criarArquivoRegistro(int chavePrimaria, char *informacao, const char *tabela, const char *coluna) {
+    // Construir o caminho completo do diretório onde o arquivo será criado
+    char caminho[512];
+    snprintf(caminho, sizeof(caminho), "./%s/%s/%d.txt", tabela, coluna, chavePrimaria);
+
+    // Criar e abrir o arquivo para escrita
+    FILE *arquivo = fopen(caminho, "w");
+    if (arquivo == NULL) {
+        printf("Erro ao criar o arquivo %s\n", caminho);
+        return;
+    }
+
+    // Escrever a informação no arquivo
+    fprintf(arquivo, "%s", informacao);
+
+    // Fechar o arquivo
+    fclose(arquivo);
+
+    printf("Arquivo criado e informação escrita com sucesso em %s\n", caminho);
 }
 
 int main() {
@@ -46,6 +69,8 @@ int main() {
     // Criar colunas
     // a) Primeiro parametro: Nome da tabela.
     // b) Segundo parametro: Nome da Coluna.
+
+    /* =-=-=-=-=-=-=-= CRIANDO COLUNA =-=-=-=-=-=-=-= */
 
     while (1)
     {
@@ -73,8 +98,33 @@ int main() {
             break;}
     }
 
+    /*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
+    char infoamacao[500];
+    printf("Digite o nome da Coluna para registrar informação:\nOBS: Limite de 200 caracteres.\n");
+    char nome_Coluna[200];
+    fgets(nome_Coluna,199,stdin);
+
+    // Remover o caractere de nova linha ('\n') inserido por fgets, se presente
+    if (nome_Coluna[strlen(nome_Coluna) - 1] == '\n') {
+        nome_Coluna[strlen(nome_Coluna) - 1] = '\0';
+    }
+
+    printf("Digite a informacao que deve ser registrada:\n");
+    fgets(infoamacao,499,stdin);
+     // Remover o caractere de nova linha ('\n') inserido por fgets, se presente
+    if (infoamacao[strlen(infoamacao) - 1] == '\n') {
+        infoamacao[strlen(infoamacao) - 1] = '\0';
+    }
 
 
-    
+
+    criarArquivoRegistro(1,infoamacao,nome_Tabela,nome_Coluna);
+
+  
+
+
+
+
+
 
     return 0;}

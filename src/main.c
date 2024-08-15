@@ -1,4 +1,4 @@
-#include <stdbool.h>
+#include <stdbool.h> 
 #include <stdio.h>
 #include <string.h>
 
@@ -19,6 +19,7 @@ int main() {
         }
 
         user_input[strlen(user_input) - 1] = '\0';
+
 
         if (check_command(user_input, "help")) {
             display_help_message();
