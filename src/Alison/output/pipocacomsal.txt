@@ -1,3 +1,0 @@
-Nome da Coluna: 228 - Nome&*
-Parametro De Inicial: 1&*
-Bits para Registro: 10&*
