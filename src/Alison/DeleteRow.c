@@ -4,8 +4,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-// Nescessario passar numero de caracteres
-
+// Retorna uma String com o diretorio onde o arquivo a ser lido está
 char caminho (char* nome_Tabela){
     char caminhoTabela[1024];
     snprintf(caminhoTabela, sizeof(caminhoTabela), "./%s.txt",nome_Tabela);
@@ -29,7 +28,9 @@ int rowVerify (char* row, int nCaracteres, char* PrimaryKey) {
     */
 
     int i,a;
-    int keySize = sizeof(PrimaryKey) / sizeof(PrimaryKey[0]);
+
+    // Tamanho de caracteres que a chave primaria abarca.
+    int keySize = sizeof(PrimaryKey) / sizeof(PrimaryKey[0]); 
 
     char *matriz_clone = malloc(sizeof(char) * nCaracteres); // Reservando Vetor
 
@@ -42,20 +43,20 @@ int rowVerify (char* row, int nCaracteres, char* PrimaryKey) {
 
      for (i=0;i<nCaracteres;i++){
 
-        //Garantia que a chave primaria é a que esperamos
+        //Mecnismo para quebra após ler '|'
         if (exit == 1){break;}
         
         
         if (row[i] == '\0') {
-           matriz_clone[i] = '\0';} 
+           matriz_clone[i] = '\0';} // Marca o final da string caso não consiga ler mais caracteres; 
         else {
-         matriz_clone[i] = row[i];} // Marca o final da string caso não consiga ler mais caracteres;
+         matriz_clone[i] = row[i];} 
 
         if (matriz_clone[i] == '|'){
             exit++;
             for (a = 0;a<keySize;a++){
-                // a em um primeiro momento a precisa ser > 1;Para matriz clone. Isso porque o ultimo numero da suposta chave começa assim.
-                // a em um primeiro momento preciso ser = 0; Para tamanhoChave.
+
+                // Em "PrimaryKey[keySize - 1 - a]" o '-1' é nescessario para ajustar indices
                 if ((i-1) - a >= 0 && matriz_clone[(i-1)-a] == PrimaryKey[keySize - 1 - a]){confirm++;}
                 else{break;}   
              }
@@ -68,63 +69,49 @@ int rowVerify (char* row, int nCaracteres, char* PrimaryKey) {
 
 
 
-char delete_Row(char* nome_Tabela, char* PrimaryKey, int nCaracteres) {
-
-// Se chavePrimaria for recebida como char temos que isolar cada caractere em uma matriz a parte
-// Se chavePrimaria for recebida como inteiro, de qualquer forma temos que comparar caractere por caractere, o que não da pra fazer com interio
+char* delete_Row(char* nome_Tabela, char* PrimaryKey, int nCaracteres, int nRows) {
 
 
-    int i,j,a;
-    int linha;
     int row,column;
+
+    int x;
 
     char chave_primaria_char[10];
     int keySize = sizeof(PrimaryKey) / sizeof(PrimaryKey[0]);
 
    
-
-    char caminho_Tabela = caminho(nome_Tabela);
+    /* Abrindo arquivo */
+    char caminho_Tabela = caminho(nome_Tabela); // Definindo caminho da tabela
     FILE *arquivoInfo = fopen(caminho_Tabela, "r");
-
     if (arquivoInfo == NULL) {
         perror("Erro ao abrir o arquivo");
         return 1;}
 
    
-    char **matriz_clone = malloc(sizeof(char)* nCaracteres); // Reservando Vetor
+    char *matriz_clone = malloc(sizeof(char)* nCaracteres); // Reservando Vetor
+    char **matriz_retorno = malloc(nRows * sizeof(char*)); // Reservando linhas, essa em questão será devolvida.
+    for (x=0;x<nRows;x++){// Reservando Colunas, essa em questão será devolvida.
+        matriz_retorno[x] = malloc(nCaracteres * sizeof(char));}
 
+
+    int parmetro_01 = sizeof(PrimaryKey) / sizeof(PrimaryKey[0]);
 
     while (fgets(matriz_clone, (nCaracteres+1), arquivoInfo)) {
-        
-    }}
+        int i = 0;
+        int j = 0;
 
+        int parametro_02 = rowVerify(matriz_clone,nCaracteres,PrimaryKey);
+        if (parmetro_01 != parametro_02){
+            matriz_retorno[i] = matriz_clone;
+            i++;
+            j++;
 
+        }
+       }
 
-
-
-
-
-
-
-
-
-
-
-
-
- 
-
-    /*Partindo da premissa que table é uma matriz, o seguinte for serve somente para recuperar a linha
-    a qual o registro com a chave primaria está */
-
-   
- 
-
-   
-
+    return matriz_retorno;}
 
 /*
-
 matriz[i][j]
 
 Chave| int A | char B | float C
