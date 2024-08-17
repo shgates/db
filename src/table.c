@@ -2,6 +2,7 @@
 #include "table.h"
 
 #include <limits.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -236,9 +237,11 @@ enum Result get_table_info(char table_name[], struct Table* t) {
     if (f == NULL) return ERROR;
     char name[MAX_TABLE_NAME_SIZE];
     unsigned int num_rows, num_columns;
+    bool found = false;
     while (fscanf(f, TABLE_LIST_FORMAT_IN, name, &num_rows, &num_columns) !=
            EOF) {
         if (strcmp(name, table_name) == 0) {
+            found = true;
             // Copia a quantidade de linhas e colunas da tabela
             strcpy(t->name, name);
             t->num_rows = num_rows;
@@ -287,6 +290,7 @@ enum Result get_table_info(char table_name[], struct Table* t) {
         }
     }
     fclose(f);
+    if (found == false) return ERROR_TABLE_NOT_FOUND;
     return SUCCESS;
 }
 
@@ -434,7 +438,7 @@ enum Result update_table_row(struct Table* t) {
 
 void list_data_in_table() {}
 
-void search_data(char table_name[], double value, enum Option option) {
+enum Result search_data(char table_name[], char value[]) {
     /*
      * 1 - Usuário deverá informar o nome da tabela onde realizará a pesquisa
      * ( Checar tabela com a variavel table_name )
@@ -452,16 +456,11 @@ void search_data(char table_name[], double value, enum Option option) {
      * do tipo string) ( Fazer depois que a pesquisa de valores numeros estiver
      * funcionando )
      * */
-
-    printf("%s %lf\n", table_name, value);
-    switch (option) {
-        case NUMERICAL:
-            // comparação numerica
-            break;
-        case TEXT:
-            // comparação de texto
-            break;
-    }
+    printf("Valor a ser pesquisado %s\n", value);
+    struct Table t;
+    enum Result result = get_table_info(table_name, &t);
+    if (result == ERROR_TABLE_NOT_FOUND) return result;
+    return SUCCESS;
 }
 
 int list_tables_with_count() { return 5; }

@@ -6,13 +6,15 @@
 #include "table.h"
 #include "utils.h"
 
+#define MAX_USER_INPUT 512
+
 int main() {
     display_menu_message();
-    char user_input[256];
+    char user_input[MAX_USER_INPUT];
 
     while (true) {
         display_user_arrow();
-        fgets(user_input, 256, stdin);
+        fgets(user_input, MAX_USER_INPUT, stdin);
 
         if (user_input[0] == '\n') {
             continue;
@@ -64,6 +66,28 @@ int main() {
             puts("Listagem de tabelas será feito em breve");
         }
         else if (check_command(user_input, "search")) {
+            list_tables();
+            puts("Informe o nome da tabela que você quer fazer a pesquisa");
+            display_user_arrow();
+            scanf(" %[^\n]", user_input);
+            format_name(user_input);
+
+            if (!table_already_exists(user_input)) {
+                printf("Tabela com nome \"%s\" não existe!\n", user_input);
+            }
+
+            char value[MAX_USER_INPUT];
+            struct Table t;
+            get_table_info(user_input, &t);
+            puts("");
+            display_user_arrow();
+            scanf(" %[^\n]", value);
+
+            enum Result result = search_data(user_input, value);
+            if (result != SUCCESS) {
+                puts("Busca não foi realizada");
+            }
+
             puts("Busca em tabelas será feita em breve");
             continue;
         }
