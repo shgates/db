@@ -192,7 +192,7 @@ int main () {
 
     /* =-=-=-=- CRIANDO MATRIZ DINAMICA =-=-=-=-  */
 
-    char **matrizDeRetorno = (char **)malloc(1 * sizeof(char *)); // Reservando linhas
+    char **matrizDeRetorno = (char **)malloc(1 * size(char *)); // Reservando linhas
     matrizDeRetorno[0] = (char *)malloc(150 * sizeof(char)); // Reservando Colunas
 
     /* =-=-=-=-= Abrindo Aquivo e Iniciando processo de leitura =-=-=-=-=-= */

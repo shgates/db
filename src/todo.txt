@@ -5,6 +5,6 @@ Criar delete data
 Criar funcao de listar todos os dados em uma tabela especifica
 
 -- Depois
-Criar funcionalidade de search data
+Criar funcionalidade de search data - comparação entre registros
 (Inicialmente fazer comparação numerica)
 Criar comando de help e creditos

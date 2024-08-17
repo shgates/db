@@ -9,7 +9,7 @@ void criarTabela (const char *nomeTabela){
     //Cria Pasta/Diretorio
     mkdir(nomeTabela);
 
-    // Criar o arquivo infoMAIS e inicializar com 000
+    
     char caminhoInfoMAIS[1024];
     snprintf(caminhoInfoMAIS, sizeof(caminhoInfoMAIS), "%s/infoMAIS.txt", nomeTabela);
     FILE *arquivoInfo = fopen(caminhoInfoMAIS, "w");
