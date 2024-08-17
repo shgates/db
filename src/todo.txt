@@ -1,10 +1,12 @@
-Para fazer:
-Em add data > verificar se primary key esta em uso
-Criar funcao update_table_row
-Criar delete data
-Criar funcao de listar todos os dados em uma tabela especifica
+**Para fazer**
 
--- Depois
-Criar funcionalidade de search data - comparação entre registros
+Alison:
+Criar delete_data -> Alison / Comando "remove"
+Criar list_table_data -> Alison / Comando "list"
+
+Felipe:
+Criar funcionalidade de search data (comparação entre registros) / Comando "search"
 (Inicialmente fazer comparação numerica)
-Criar comando de help e creditos
+
+// Talvez:
+Resolver o padding dos dados das tabelas

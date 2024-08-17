@@ -6,8 +6,10 @@
 enum Result {
     SUCCESS,
     ERROR,
-    TABLE_NOT_CREATED,
-    TABLE_NOT_UPDATED,
+    ERROR_TABLE_NOT_CREATED,
+    ERROR_TABLE_NOT_UPDATED,
+    ERROR_PRIMARY_KEY_EXISTS,
+    ERROR_TABLE_NOT_FOUND,
 };
 
 enum Type {
@@ -35,5 +37,7 @@ void format_name(char* name);
 enum Type string_to_type(char* type);
 
 void type_to_string(enum Type t, char* out);
+
+int get_num_from_user_input(char user_input[]);
 
 #endif
