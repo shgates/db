@@ -7,4 +7,5 @@ Criar funcao de listar todos os dados em uma tabela especifica
 -- Depois
 Criar funcionalidade de search data - comparação entre registros
 (Inicialmente fazer comparação numerica)
+Retorno do valor atomico
 Criar comando de help e creditos
