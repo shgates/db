@@ -21,7 +21,7 @@ const char* TABLE_LIST_FORMAT_IN = "%s %u %u\n";
 const char* TABLE_LIST_FORMAT_OUT = "%s %u %u\n";
 
 // Formatação de uma coluna de tabela
-const char* TABLE_COLUMN_FORMAT = "%s %s |";
+const char* TABLE_COLUMN_FORMAT = "%s %s|";
 
 // Formatação de entrada (ex: fscanf) de um registro de uma tabela
 const char* TABLE_ROW_FORMAT_IN = "%[^|]";
@@ -36,6 +36,49 @@ static char FILE_PATH[MAX_PATH_SIZE];
 // de colunas de cada tabela do db
 static char MAIN_FILE_PATH[] = "./db/listoftables.txt";
 
+// Função usada para ler as colunas de uma tabela depois de ter lido as colunas
+// em um txt Parametros da função: t - ponteiro para uma variavel de tipo Table
+// buffer_line - a string contendo as colunas de uma tabela (Pega usando fgets)
+// num_columns - quantidade de colunas dessa tabela
+void get_columns(struct Table* t, char* buffer_line, unsigned int num_columns) {
+    size_t line_index = 0, count = 0;
+    for (size_t i = 0; i < num_columns; i++) {
+        char name[256], type_s[256];
+        // Copia o tipo da coluna (em texto)
+        while (buffer_line[line_index] != ' ') {
+            type_s[count] = buffer_line[line_index];
+            count++;
+            line_index++;
+        }
+
+        type_s[count++] = '\0';
+
+        strcpy(t->columns[i].type_s, type_s);
+        printf("");
+        t->columns[i].type = string_to_type(type_s);
+        // Pula o espaço
+        line_index++;
+        // Reseta contador
+        count = 0;
+        // Copia nome da coluna
+        while (buffer_line[line_index] != '|') {
+            name[count] = buffer_line[line_index];
+            count++;
+            line_index++;
+        }
+        // Formata o texto
+        name[count++] = '\0';
+
+        strcpy(t->columns[i].name, name);
+        // Pula a barra
+        line_index++;
+        // Reseta contador
+        count = 0;
+        memset(name, 0, 256);
+        memset(type_s, 0, 256);
+    }
+}
+
 // função usada para persistir uma tabela nova -> Usado dentro da função
 // create_table
 enum Result persist_table(struct Table* t) {
@@ -48,7 +91,6 @@ enum Result persist_table(struct Table* t) {
     fprintf(f, TABLE_COLUMN_FORMAT, "uint", t->columns[0].name);
 
     for (size_t i = 1; i < t->num_columns; i++) {
-        fprintf(f, " ");
         fprintf(
             f, TABLE_COLUMN_FORMAT, t->columns[i].type_s, t->columns[i].name);
     }
@@ -62,7 +104,7 @@ enum Result persist_table(struct Table* t) {
 enum Result append_table_to_list(struct Table* table) {
     FILE* f = fopen(MAIN_FILE_PATH, "a");
     if (f == NULL) {
-        return TABLE_NOT_CREATED;
+        return ERROR_TABLE_NOT_CREATED;
     }
     // Vai para o final do txt
     fseek(f, 0, SEEK_END);
@@ -78,14 +120,14 @@ enum Result append_table_to_list(struct Table* table) {
 enum Result create_table(char table_name[]) {
     struct Table new_table = {.num_columns = 1, .num_rows = 0};
     strcpy(new_table.name, table_name);
-    struct Column pk_column = {.is_empty = true, .type = UINT};
+    struct Column pk_column = {.type = UINT};
     puts("Digite o nome da coluna da primary key (id, por exemplo):");
     display_user_arrow();
     scanf("%s", pk_column.name);
     fflush(stdin);
     memcpy(&new_table.columns[0], &pk_column, sizeof(pk_column));
     printf("Coluna Primary Key [%s] de tipo [UINT] criada!\n", pk_column.name);
-    puts("Add columns to your table:");
+    puts("Adicione colunas para a sua tabela:");
     while (true) {
         unsigned int type;
         printf(
@@ -112,7 +154,6 @@ enum Result create_table(char table_name[]) {
         display_user_arrow();
         scanf(" %[^\n]", curr_column->name);
         fflush(stdin);
-        curr_column->is_empty = true;
         printf("coluna [%s] de tipo [%s] criada!\n", curr_column->name, type_s);
         new_table.num_columns++;
     }
@@ -121,7 +162,6 @@ enum Result create_table(char table_name[]) {
     if (result != SUCCESS) return result;
     result = persist_table(&new_table);
     if (result != SUCCESS) return result;
-    puts("Tabela criada.");
     return result;
 }
 
@@ -152,7 +192,7 @@ enum Result delete_table(char table_name[]) {
     }
 
     if (temp == NULL) {
-        return TABLE_NOT_CREATED;
+        return ERROR;
     }
     while (fscanf(f, TABLE_LIST_FORMAT_IN, table, &rows, &columns) != EOF) {
         if (strcmp(table, table_name) != 0)
@@ -208,21 +248,18 @@ enum Result get_table_info(char table_name[], struct Table* t) {
             FILE* fp = fopen(FILE_PATH, "r");
             if (fp == NULL) return ERROR;
             // Copia as colunas
-            for (size_t i = 0; i < t->num_columns; i++) {
-                fscanf(
-                    f, TABLE_COLUMN_FORMAT, t->columns[i].type_s,
-                    t->columns[i].name);
-                t->columns[i].type = string_to_type(t->columns[i].type_s);
-            }
-
-            // A primeira coluna sempre será do tipo unsigned int
-            strcpy(t->columns[0].type_s, "uint");
+            char buffer[2048];
+            fgets(buffer, 2048, fp);
+            get_columns(t, buffer, t->num_columns);
 
             // Copia os registros
             char data[t->num_columns][100];
             for (size_t i = 0; i < t->num_rows; i++) {
                 for (size_t j = 0; j < t->num_columns; j++) {
+                    // Le registro de uma coluna
                     fscanf(fp, TABLE_ROW_FORMAT_IN, data[j]);
+                    // Pula a barra
+                    fseek(fp, 1, SEEK_CUR);
                     switch (t->columns[j].type) {
                         case UINT:
                             t->columns[j].data_uint[i] = atoi(data[j]);
@@ -269,9 +306,10 @@ enum Result add_data(char table_name[]) {
     for (size_t i = 0; i < t.num_columns; i++) {
         printf("[%s] %s | ", t.columns[i].type_s, t.columns[i].name);
     }
+    printf("\n");
     for (size_t i = 0; i < t.num_rows; i++) {
         for (size_t j = 0; j < t.num_columns; j++) {
-            print_data(t.columns[j], t.columns[j].type, i);
+            print_data(t.columns[j], j, t.columns[j].type, i, t.num_columns);
         }
         printf("\n");
     }
@@ -283,11 +321,19 @@ enum Result add_data(char table_name[]) {
     fseek(f, 0, SEEK_END);
     for (size_t i = 0; i < t.num_columns; i++) {
         printf(
-            "adicione dados para coluna [%s] %s", t.columns[i].type_s,
+            "Adicione dados para coluna [%s] %s", t.columns[i].type_s,
             t.columns[i].name);
         display_user_arrow();
         scanf(" %s", new_data[i]);
         fflush(stdin);
+    }
+
+    unsigned int pk = atoi(new_data[0]);
+    // Checa se primary key já existe
+    result = primary_key_exists(&t, pk);
+
+    if (result == ERROR_PRIMARY_KEY_EXISTS) {
+        return ERROR_PRIMARY_KEY_EXISTS;
     }
 
     for (size_t i = 0; i < t.num_columns; i++) {
@@ -319,28 +365,32 @@ enum Result delete_data(char table_name[], unsigned int pk) {
     return SUCCESS;
 }
 
-void print_data(struct Column col, enum Type type, size_t idx) {
+void print_data(
+    struct Column col, size_t col_idx, enum Type type, size_t idx,
+    size_t num_columns) {
+    int padding = 5;
     switch (type) {
         case UINT:
-            printf("%u", col.data_uint[idx]);
+            printf("%*u", padding, col.data_uint[idx]);
             break;
         case INT:
-            printf("%d", col.data_int[idx]);
-
+            printf("%*d", padding, col.data_int[idx]);
             break;
         case FLOAT:
-            printf("%.2f", col.data_float[idx]);
-
+            printf("%*.2f", padding, col.data_float[idx]);
             break;
         case DOUBLE:
-            printf("%.2lf", col.data_double[idx]);
+            printf("%*.2lf", padding, col.data_double[idx]);
             break;
         case CHAR:
-            printf("%c", col.data_char[idx]);
+            printf("%*c", padding, col.data_char[idx]);
             break;
         case STRING:
-            printf("%s", col.data_string[idx]);
+            printf("%*s", padding, col.data_string[idx]);
             break;
+    }
+    if (col_idx < num_columns - 1) {
+        printf("%*c", padding, '|');
     }
 }
 
@@ -357,7 +407,7 @@ enum Result update_table_row(struct Table* t) {
     }
 
     if (temp == NULL) {
-        return TABLE_NOT_UPDATED;
+        return ERROR_TABLE_NOT_UPDATED;
     }
     char table_buffer[MAX_TABLE_NAME_SIZE];
     unsigned int rows, columns;
@@ -380,10 +430,8 @@ enum Result update_table_row(struct Table* t) {
     return SUCCESS;
 }
 
-// Vou fazer
 void list_data_in_table() {}
 
-// Alison
 void search_data(char table_name[], double value, enum Option option) {
     /*
      * 1 - Usuário deverá informar o nome da tabela onde realizará a pesquisa
@@ -412,4 +460,15 @@ void search_data(char table_name[], double value, enum Option option) {
             // comparação de texto
             break;
     }
+}
+
+int list_tables_with_count() { return 5; }
+
+enum Result primary_key_exists(struct Table* t, unsigned int pk) {
+    for (size_t i = 0; i < t->num_rows; i++) {
+        if (pk == t->columns[0].data_uint[i]) {
+            return ERROR_PRIMARY_KEY_EXISTS;
+        }
+    }
+    return SUCCESS;
 }

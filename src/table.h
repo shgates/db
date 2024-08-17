@@ -16,7 +16,6 @@ struct Column {
     char name[MAX_COLUMN_NAME];
     enum Type type;
     char type_s[20];
-    bool is_empty;
 
     union {
         unsigned int data_uint[MAX_REGISTER_SIZE];
@@ -50,10 +49,16 @@ enum Result add_data(char table_name[]);
 
 enum Result delete_data(char table_name[], unsigned int pk);
 
-void print_data(struct Column col, enum Type type, size_t idx);
+void print_data(
+    struct Column col, size_t col_idx, enum Type type, size_t idx,
+    size_t num_columns);
 
 enum Result update_table_row(struct Table* t);
 
 void search_data(char table_name[], double value, enum Option option);
+
+int list_tables_with_count();
+
+enum Result primary_key_exists(struct Table* t, unsigned int pk);
 
 #endif
