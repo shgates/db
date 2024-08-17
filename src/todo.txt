@@ -5,7 +5,7 @@ Criar delete_data -> Alison / Comando "remove"
 Criar list_table_data -> Alison / Comando "list"
 
 Felipe:
-Criar funcionalidade de search data / Comando "search"
+Criar funcionalidade de search data (comparação entre registros) / Comando "search"
 (Inicialmente fazer comparação numerica)
 
 // Talvez:
