@@ -13,60 +13,23 @@ char caminho (char* nome_Tabela){
     return caminhoTabela;
 }
 
-char delete_Row(char* nome_Tabela, char *PrimaryKey, int nCaracteres) {
-
-// Se chavePrimaria for recebida como char temos que isolar cada caractere em uma matriz a parte
-// Se chavePrimaria for recebida como inteiro, de qualquer forma temos que comparar caractere por caractere, o que não da pra fazer com interio
 
 
-    int i,j,a;
-    int linha;
-    int row,column;
-
-    char chave_primaria_char[10];
-    int keySize = sizeof(PrimaryKey) / sizeof(PrimaryKey[0]);
-
-   
-
-    char caminho_Tabela = caminho(nome_Tabela);
-    FILE *arquivoInfo = fopen(caminho_Tabela, "r");
-
-    if (arquivoInfo == NULL) {
-        perror("Erro ao abrir o arquivo");
-        return 1;}
-
-   
-    char **matriz_clone = malloc(sizeof(char)* nCaracteres); // Reservando Vetor
-
-
-    while (fgets(matriz_clone, (nCaracteres+1), arquivoInfo)) {
-        
-    }
+// =-=-=-=-=-=-=-=-=-=-=--==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-//
+// =-=-=-=-=-=-=-=-=-=-=--==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-//
 
 
 
+int rowVerify (char* row, int nCaracteres, char* PrimaryKey) {
 
-
-
-
-
-
-
-
-
-
-
-
- 
-
-    /*Partindo da premissa que table é uma matriz, o seguinte for serve somente para recuperar a linha
-    a qual o registro com a chave primaria está */
-
-   
- 
-int rowVerify (char* row, int nCaracteres) {
+    /*
+    a) Row: Vetor de caracteres a ser lido.
+    b) nCaracteres: Nescessário para a precisão do loop
+    c) PrimaryKey: Para comparar se os caracteres da chave são correspondentes
+    */
 
     int i,a;
+    int keySize = sizeof(PrimaryKey) / sizeof(PrimaryKey[0]);
 
     char *matriz_clone = malloc(sizeof(char) * nCaracteres); // Reservando Vetor
 
@@ -102,6 +65,61 @@ int rowVerify (char* row, int nCaracteres) {
            free(matriz_clone); // Liberando a memória alocada
            return confirm;
            }
+
+
+
+char delete_Row(char* nome_Tabela, char* PrimaryKey, int nCaracteres) {
+
+// Se chavePrimaria for recebida como char temos que isolar cada caractere em uma matriz a parte
+// Se chavePrimaria for recebida como inteiro, de qualquer forma temos que comparar caractere por caractere, o que não da pra fazer com interio
+
+
+    int i,j,a;
+    int linha;
+    int row,column;
+
+    char chave_primaria_char[10];
+    int keySize = sizeof(PrimaryKey) / sizeof(PrimaryKey[0]);
+
+   
+
+    char caminho_Tabela = caminho(nome_Tabela);
+    FILE *arquivoInfo = fopen(caminho_Tabela, "r");
+
+    if (arquivoInfo == NULL) {
+        perror("Erro ao abrir o arquivo");
+        return 1;}
+
+   
+    char **matriz_clone = malloc(sizeof(char)* nCaracteres); // Reservando Vetor
+
+
+    while (fgets(matriz_clone, (nCaracteres+1), arquivoInfo)) {
+        
+    }}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+    /*Partindo da premissa que table é uma matriz, o seguinte for serve somente para recuperar a linha
+    a qual o registro com a chave primaria está */
+
+   
+ 
+
    
 
 
