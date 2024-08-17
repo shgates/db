@@ -7,4 +7,3 @@ Criar list_table_data -> Alison / Comando "list"
 Felipe:
 Criar funcionalidade de search data / Comando "search"
 (Inicialmente fazer comparação numerica)
-Criar comando de help e creditos

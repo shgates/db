@@ -1,6 +1,7 @@
 
 #include "table.h"
 
+#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -329,6 +330,11 @@ enum Result add_data(char table_name[]) {
     }
 
     unsigned int pk = atoi(new_data[0]);
+    // Checa se primary key é positivo
+    if (pk > INT_MAX || pk == 0) {
+        printf("Chave primária deve ser um número positivo\n");
+        return ERROR;
+    }
     // Checa se primary key já existe
     result = primary_key_exists(&t, pk);
 
