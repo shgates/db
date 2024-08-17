@@ -1,10 +1,10 @@
 **Para fazer**
 
 Alison:
-Criar delete_data -> Alison
-Criar list_table_data -> Alison
+Criar delete_data -> Alison / Comando "remove"
+Criar list_table_data -> Alison / Comando "list"
 
 Felipe:
-Criar funcionalidade de search data
+Criar funcionalidade de search data / Comando "search"
 (Inicialmente fazer comparação numerica)
 Criar comando de help e creditos

@@ -1,7 +1,6 @@
-#include <stdbool.h> 
+#include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
-#include <unistd.h>
 
 #include "messages.h"
 #include "table.h"
@@ -16,12 +15,10 @@ int main() {
         fgets(user_input, 256, stdin);
 
         if (user_input[0] == '\n') {
-            sleep(1);
             continue;
         }
 
         user_input[strlen(user_input) - 1] = '\0';
-
 
         if (check_command(user_input, "help")) {
             display_help_message();
@@ -115,15 +112,15 @@ int main() {
             scanf(" %[^\n]", user_input);
             format_name(user_input);
             if (!table_already_exists(user_input)) {
-                printf("Table with name \"%s\" doesn't exists\n", user_input);
+                printf("Tabela com nome \"%s\" não existe\n", user_input);
                 continue;
             }
             enum Result has_err = delete_table(user_input);
             if (has_err != SUCCESS) {
-                printf("Table %s doesn't exist!\n", user_input);
+                printf("Tabela %s não existe!\n", user_input);
                 continue;
             }
-            printf("Table %s deleted succesfully!\n", user_input);
+            printf("Tabela %s foi deletada com sucesso!\n", user_input);
             continue;
         }
         else {

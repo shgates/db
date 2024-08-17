@@ -309,7 +309,7 @@ enum Result add_data(char table_name[]) {
     printf("\n");
     for (size_t i = 0; i < t.num_rows; i++) {
         for (size_t j = 0; j < t.num_columns; j++) {
-            print_data(t.columns[j], j, t.columns[j].type, i, t.num_columns);
+            print_data(t.columns[j], t.columns[j].type, i);
         }
         printf("\n");
     }
@@ -365,9 +365,7 @@ enum Result delete_data(char table_name[], unsigned int pk) {
     return SUCCESS;
 }
 
-void print_data(
-    struct Column col, size_t col_idx, enum Type type, size_t idx,
-    size_t num_columns) {
+void print_data(struct Column col, enum Type type, size_t idx) {
     int padding = 5;
     switch (type) {
         case UINT:
@@ -389,9 +387,7 @@ void print_data(
             printf("%*s", padding, col.data_string[idx]);
             break;
     }
-    if (col_idx < num_columns - 1) {
-        printf("%*c", padding, '|');
-    }
+    printf("%*c", padding, '|');
 }
 
 enum Result update_table_row(struct Table* t) {
