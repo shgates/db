@@ -4,6 +4,10 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
+/*=-=-=-=-=-=-=-=-=-= Leia as pontuações nas seguntes linhas =-=-=-=-=-=-=-=-=-= */
+
+// 97 -98 
+
 // Retorna uma String com o diretorio onde o arquivo a ser lido está
 char caminho (char* nome_Tabela){
     char caminhoTabela[1024];
@@ -88,7 +92,11 @@ char* delete_Row(char* nome_Tabela, char* PrimaryKey, int nCaracteres, int nRows
         return 1;}
 
    
-    char *matriz_clone = malloc(sizeof(char)* nCaracteres); // Reservando Vetor
+    char *matriz_clone = malloc(sizeof(char)* nCaracteres); // Reservando Vetor.
+
+    /* OBS: Para ler a quantidade de caracteres de uma linha, antes disso é nescessario um vetor de tamanho 'n' onde
+    n é a propria quantidade de caracteres */
+    
     char **matriz_retorno = malloc(nRows * sizeof(char*)); // Reservando linhas, essa em questão será devolvida.
     for (x=0;x<nRows;x++){// Reservando Colunas, essa em questão será devolvida.
         matriz_retorno[x] = malloc(nCaracteres * sizeof(char));}

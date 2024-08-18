@@ -2,6 +2,7 @@
 
 #include <ctype.h>
 #include <stdbool.h>
+#include <stdlib.h>
 #include <string.h>
 
 bool check_command(const char input[], const char command[]) {
@@ -60,4 +61,20 @@ void type_to_string(enum Type t, char* out) {
             strcpy(out, "unknown");
             break;
     }
+}
+
+int get_num_from_user_input(char user_input[]) {
+    size_t size = strlen(user_input);
+    char copy[size];
+    size_t count = 0;
+    for (size_t i = 0; i < size; i++) {
+        if (isdigit(user_input[i])) {
+            copy[count] = user_input[i];
+            count++;
+        }
+        else {
+            break;
+        }
+    }
+    return atoi(copy);
 }

@@ -16,9 +16,9 @@ a. deverá mostrar para o usuário as tabelas existentes -> Feito
 
 ## 3. Criar uma nova linha na tabela
 
-a. Usuário deve informar o nome da tabela
-b. sistema deve solicitar os valores de cada uma das colunas
-c. sistema deve verificar a chave primária
+a. Usuário deve informar o nome da tabela -> Feito
+b. sistema deve solicitar os valores de cada uma das colunas -> Feito
+c. sistema deve verificar a chave primária -> Feito
 - i. Em uma tabela deve existir um e apenas um valor de chave
   primária. Se o usuário informar uma chave que já existe,
   sistema deve emitir uma mensagem de erro e não deve inserir
@@ -51,5 +51,5 @@ ser apagada
 
 ## 7. Apagar uma tabela
 
-a. usuário deverá fornecer o nome da tabela a ser apagada
+a. usuário deverá fornecer o nome da tabela a ser apagada -> Feito
 
