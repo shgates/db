@@ -36,7 +36,6 @@ ifeq ($(OS_IS_UNIX), true)
 	rm -rf $(BUILD_DIR) $(EXECUTABLE)
 else 
 	rmdir /S /Q $(BUILD_DIR) $(EXECUTABLE)
-
 endif
 
 cleandb:
@@ -46,8 +45,14 @@ else
 	rmdir /S /Q  db/*
 endif
 
+
+ifeq ($(OS_IS_UNIX), true)
 	if [ ! -d "db" ]; then \
         mkdir db; \
 	fi
+else
+	if not exist "db" mkdir db
+endif
+
 	touch db/listoftables.txt
 
