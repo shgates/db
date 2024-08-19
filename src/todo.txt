@@ -7,11 +7,7 @@ Criar list_table_data -> Alison / Comando "list"
 Felipe:
 Criar funcionalidade de search data (comparação entre registros) / Comando "search"
 (Inicialmente fazer comparação numerica)
-<<<<<<< HEAD
 Retorno do valor atomico
-Criar comando de help e creditos
-=======
 
 // Talvez:
 Resolver o padding dos dados das tabelas
->>>>>>> 8aca4a1a86dbbdede5c40ec6761a4a9168f83469

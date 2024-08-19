@@ -78,3 +78,16 @@ int get_num_from_user_input(char user_input[]) {
     }
     return atoi(copy);
 }
+
+bool is_number(char string_number[]) {
+    size_t size = strlen(string_number);
+    for (size_t i = 0; i < size; i++) {
+        if (string_number[i] == '.' || string_number[i] == ',') {
+            continue;
+        }
+        if (!isdigit(string_number[i])) {
+            return false;
+        }
+    }
+    return true;
+}

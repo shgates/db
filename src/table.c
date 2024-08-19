@@ -438,7 +438,8 @@ enum Result update_table_row(struct Table* t) {
 
 void list_data_in_table() {}
 
-enum Result search_data(char table_name[], char value[]) {
+enum Result search_data(
+    char table_name[], char col_name[], char value[], struct Table t) {
     /*
      * 1 - Usuário deverá informar o nome da tabela onde realizará a pesquisa
      * ( Checar tabela com a variavel table_name )
@@ -457,9 +458,9 @@ enum Result search_data(char table_name[], char value[]) {
      * funcionando )
      * */
     printf("Valor a ser pesquisado %s\n", value);
-    struct Table t;
-    enum Result result = get_table_info(table_name, &t);
-    if (result == ERROR_TABLE_NOT_FOUND) return result;
+    printf("Coluna a ser pesquisada %s\n", col_name);
+    printf("Nome da tabela %s %s\n", table_name, t.name);
+
     return SUCCESS;
 }
 
@@ -472,4 +473,13 @@ enum Result primary_key_exists(struct Table* t, unsigned int pk) {
         }
     }
     return SUCCESS;
+}
+
+bool column_exist(char column_name[], struct Table t) {
+    for (size_t i = 0; i < t.num_columns; i++) {
+        if (strcmp(t.columns[i].name, column_name) == 0) {
+            return true;
+        }
+    }
+    return false;
 }

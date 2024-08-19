@@ -79,11 +79,55 @@ int main() {
             char value[MAX_USER_INPUT];
             struct Table t;
             get_table_info(user_input, &t);
-            puts("");
+
+            char col_name[MAX_USER_INPUT];
+            while (true) {
+                puts(
+                    "Informe o nome da coluna ou digite 'quit' para sair da "
+                    "busca");
+                display_user_arrow();
+                scanf(" %[^\n]", col_name);
+                if (check_command(col_name, "quit")) {
+                    continue;
+                }
+                if (column_exist(col_name, t)) {
+                    break;
+                }
+                else {
+                    printf(
+                        "Coluna %s não existe em tabela %s\n", col_name,
+                        t.name);
+                }
+            }
+            puts(
+                "Selecione se quer fazer uma comparação numérica ou buscar "
+                "um "
+                "texto:");
+            puts("1 -> Comparação numérica");
+            puts("2 -> Buscar texto");
+            int option;
+            scanf(" %d", &option);
+            puts("Digite o valor:");
             display_user_arrow();
             scanf(" %[^\n]", value);
+            switch (option) {
+                case 1:
+                    if (!is_number(value)) {
+                        puts("Valor não é um número");
+                        continue;
+                    }
 
-            enum Result result = search_data(user_input, value);
+                    break;
+                case 2:
+                    // Não é necessário validação
+                    break;
+
+                default:
+                    puts("Escolha não existe");
+                    continue;
+            }
+
+            enum Result result = search_data(user_input, col_name, value, t);
             if (result != SUCCESS) {
                 puts("Busca não foi realizada");
             }

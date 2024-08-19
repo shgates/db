@@ -53,11 +53,14 @@ void print_data(struct Column col, enum Type type, size_t idx);
 
 enum Result update_table_row(struct Table* t);
 
-enum Result search_data(char table_name[], char value[]);
+enum Result search_data(
+    char table_name[], char col_name[], char value[], struct Table t);
 
 int list_tables_with_count();
 
 enum Result primary_key_exists(struct Table* t, unsigned int pk);
 
 enum Result get_table_info(char table_name[], struct Table* t);
+
+bool column_exist(char column_name[], struct Table t);
 #endif

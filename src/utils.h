@@ -40,4 +40,6 @@ void type_to_string(enum Type t, char* out);
 
 int get_num_from_user_input(char user_input[]);
 
+bool is_number(char string_number[]);
+
 #endif
