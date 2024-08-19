@@ -39,6 +39,8 @@ enum Result create_table(char* table_name);
 
 void list_tables();
 
+enum Result list_data(char table_name[]);
+
 enum Result delete_table(char table_name[]);
 
 int delete_table_file(char table_name[]);
@@ -58,7 +60,7 @@ enum Result search_data(
 
 int list_tables_with_count();
 
-enum Result primary_key_exists(struct Table* t, unsigned int pk);
+bool primary_key_exists(struct Table* t, unsigned int pk);
 
 enum Result get_table_info(char table_name[], struct Table* t);
 

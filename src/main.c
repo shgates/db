@@ -26,7 +26,7 @@ int main() {
             display_help_message();
         }
         else if (
-            check_command(user_input, "leave") ||
+            check_command(user_input, "quit") ||
             check_command(user_input, "exit") || user_input[0] == 'q') {
             display_ending_message();
             break;
@@ -57,13 +57,20 @@ int main() {
             puts(
                 "Digite o nome de uma tabela para ler seu conteúdo ou digite "
                 "'quit' para sair");
+            display_user_arrow();
             scanf(" %[^\n]", user_input);
             if (check_command(user_input, "quit")) {
+                puts("Voltando para o menu inicial!");
                 continue;
             }
             format_name(user_input);
 
-            puts("Listagem de tabelas será feito em breve");
+            if (!table_already_exists(user_input)) {
+                printf("Tabela com nome \"%s\" não existe!\n", user_input);
+                continue;
+            }
+
+            list_data(user_input);
         }
         else if (check_command(user_input, "search")) {
             list_tables();
@@ -74,6 +81,7 @@ int main() {
 
             if (!table_already_exists(user_input)) {
                 printf("Tabela com nome \"%s\" não existe!\n", user_input);
+                continue;
             }
 
             char value[MAX_USER_INPUT];
@@ -88,6 +96,7 @@ int main() {
                 display_user_arrow();
                 scanf(" %[^\n]", col_name);
                 if (check_command(col_name, "quit")) {
+                    puts("Voltando para o menu inicial!");
                     continue;
                 }
                 if (column_exist(col_name, t)) {
@@ -163,15 +172,35 @@ int main() {
                 user_input);
         }
         else if (check_command(user_input, "remove")) {
-            int num_tables = list_tables_with_count();
-            puts("Digite o índice da tabela que você quer deletar");
+            list_tables();
+            puts("Digite a tabela que você remover um registro");
+            display_user_arrow();
             scanf(" %[^\n]", user_input);
-            int num = get_num_from_user_input(user_input);
-            printf("numero input = %d\n", num);
-            if (num < 1 || num > num_tables) {
-                puts("Não existe uma tabela com esse índice");
+            format_name(user_input);
+
+            if (!table_already_exists(user_input)) {
+                printf("Tabela com nome \"%s\" não existe!\n", user_input);
+                continue;
             }
+
+            list_data(user_input);
+            unsigned int pk;
             puts("Digite a chave primária do registro que você quer remover");
+            display_user_arrow();
+            scanf(" %u", &pk);
+            enum Result result = delete_data(user_input, pk);
+            if (result == ERROR_PRIMARY_KEY_NOT_EXISTS) {
+                printf("Chave primária %u não existe nessa tabela\n", pk);
+                continue;
+            }
+            else if (result != SUCCESS) {
+                printf(
+                    "Não foi possível deletar registro na tabela %s\n",
+                    user_input);
+                continue;
+            }
+
+            puts("Registro deletado com sucesso");
         }
         else if (check_command(user_input, "delete")) {
             list_tables();

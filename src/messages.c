@@ -18,7 +18,7 @@ void display_help_message() {
     printf("%12s: ", "help");
     puts("Mostra a lista de comandos");
 
-    printf("%20s: ", "exit|leave|q");
+    printf("%19s: ", "exit|quit|q");
     puts("Encerra o programa");
 
     printf("%15s: ", "credits");

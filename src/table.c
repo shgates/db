@@ -175,6 +175,7 @@ void list_tables() {
     while (fscanf(f, TABLE_LIST_FORMAT_IN, table, &rows, &columns) != EOF) {
         printf("%s\n", table);
     }
+    printf("\n");
     fclose(f);
 }
 
@@ -197,8 +198,9 @@ enum Result delete_table(char table_name[]) {
         return ERROR;
     }
     while (fscanf(f, TABLE_LIST_FORMAT_IN, table, &rows, &columns) != EOF) {
-        if (strcmp(table, table_name) != 0)
+        if (strcmp(table, table_name) != 0) {
             fprintf(temp, TABLE_LIST_FORMAT_OUT, table, rows, columns);
+        }
     }
 
     fclose(f);
@@ -307,7 +309,7 @@ enum Result add_data(char table_name[]) {
         printf("Não foi possivel carregar dados da tabela %s\n", table_name);
         return ERROR;
     }
-    puts("Table columns:");
+    printf("Tabela %s\n\n:", table_name);
     for (size_t i = 0; i < t.num_columns; i++) {
         printf("[%s] %s | ", t.columns[i].type_s, t.columns[i].name);
     }
@@ -340,9 +342,7 @@ enum Result add_data(char table_name[]) {
         return ERROR;
     }
     // Checa se primary key já existe
-    result = primary_key_exists(&t, pk);
-
-    if (result == ERROR_PRIMARY_KEY_EXISTS) {
+    if (primary_key_exists(&t, pk)) {
         return ERROR_PRIMARY_KEY_EXISTS;
     }
 
@@ -371,7 +371,43 @@ enum Result delete_data(char table_name[], unsigned int pk) {
         printf("Tabela %s não possui dados para deletar\n", table_name);
         return ERROR;
     }
-    printf("%u\n", pk);
+    if (!primary_key_exists(&t, pk)) {
+        return ERROR_PRIMARY_KEY_NOT_EXISTS;
+    }
+    FILE *file, *temp;
+    char temp_filename[MAX_PATH_SIZE];
+    sprintf(FILE_PATH, "./db/%s.txt", table_name);
+    sprintf(temp_filename, "./db/temp____%s.txt", table_name);
+    file = fopen(FILE_PATH, "r");
+    temp = fopen(temp_filename, "w");
+
+    if (file == NULL || temp == NULL) {
+        return ERROR;
+    }
+
+    // Copia as colunas das tabelas para o novo arquivo
+    char line[2048];
+    fgets(line, 2048, file);
+    fputs(line, temp);
+
+    // Copia os registros das tabelas para o novo arquivo
+    // com exceção do registro com a pk selecionada
+    for (size_t i = 0; i < t.num_rows; i++) {
+        fgets(line, 2048, file);
+        if (pk != t.columns[0].data_uint[i]) {
+            fputs(line, temp);
+        }
+    }
+
+    fclose(file);
+    fclose(temp);
+
+    remove(FILE_PATH);
+    rename(temp_filename, FILE_PATH);
+
+    t.num_rows--;
+    update_table_row(&t);
+
     return SUCCESS;
 }
 
@@ -436,7 +472,28 @@ enum Result update_table_row(struct Table* t) {
     return SUCCESS;
 }
 
-void list_data_in_table() {}
+enum Result list_data(char table_name[]) {
+    sprintf(FILE_PATH, "./db/%s.txt", table_name);
+
+    FILE* file = fopen(FILE_PATH, "r");
+
+    if (file == NULL) {
+        printf("Erro ao ler tabela %s", table_name);
+        return ERROR;
+    }
+
+    char* table_data = malloc(sizeof(char) * MAX_INPUT);  // Reservando Vetor.
+
+    printf("\nDados da tabela %s\n\n", table_name);
+
+    while (fgets(table_data, (MAX_INPUT + 1), file)) {
+        printf("%s", table_data);
+        memset(table_data, 0, MAX_INPUT + 1);  // Limpando o conteúdo da matriz
+    }
+    free(table_data);  // Liberando a memória alocada após o loop
+    fclose(file);      // Fechando o arquivo
+    return SUCCESS;
+}
 
 enum Result search_data(
     char table_name[], char col_name[], char value[], struct Table t) {
@@ -466,13 +523,13 @@ enum Result search_data(
 
 int list_tables_with_count() { return 5; }
 
-enum Result primary_key_exists(struct Table* t, unsigned int pk) {
+bool primary_key_exists(struct Table* t, unsigned int pk) {
     for (size_t i = 0; i < t->num_rows; i++) {
         if (pk == t->columns[0].data_uint[i]) {
-            return ERROR_PRIMARY_KEY_EXISTS;
+            return true;
         }
     }
-    return SUCCESS;
+    return false;
 }
 
 bool column_exist(char column_name[], struct Table t) {
