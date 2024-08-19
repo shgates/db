@@ -89,15 +89,19 @@ int main() {
             get_table_info(user_input, &t);
 
             char col_name[MAX_USER_INPUT];
+            bool quit = false;
             while (true) {
                 puts(
                     "Informe o nome da coluna ou digite 'quit' para sair da "
                     "busca");
+                for (size_t i = 0; i < t.num_columns; i++) {
+                    printf("%s\n", t.columns[i].name);
+                }
                 display_user_arrow();
                 scanf(" %[^\n]", col_name);
                 if (check_command(col_name, "quit")) {
-                    puts("Voltando para o menu inicial!");
-                    continue;
+                    quit = true;
+                    break;
                 }
                 if (column_exist(col_name, t)) {
                     break;
@@ -108,6 +112,10 @@ int main() {
                         t.name);
                 }
             }
+            if (quit) {
+                puts("Voltando para o menu inicial!");
+                continue;
+            }
             puts(
                 "Selecione se quer fazer uma comparação numérica ou buscar "
                 "um "
@@ -115,7 +123,15 @@ int main() {
             puts("1 -> Comparação numérica");
             puts("2 -> Buscar texto");
             int option;
+            display_user_arrow();
             scanf(" %d", &option);
+            if (option == 2) {
+                // Busca de texto não foi implementada
+                puts(
+                    "Sinto muito, mas a ferramenta de busca de texto não está "
+                    "pronta!");
+                continue;
+            }
             puts("Digite o valor:");
             display_user_arrow();
             scanf(" %[^\n]", value);
@@ -135,14 +151,10 @@ int main() {
                     puts("Escolha não existe");
                     continue;
             }
-
             enum Result result = search_data(user_input, col_name, value, t);
             if (result != SUCCESS) {
                 puts("Busca não foi realizada");
             }
-
-            puts("Busca em tabelas será feita em breve");
-            continue;
         }
         else if (check_command(user_input, "add")) {
             list_tables();

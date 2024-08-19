@@ -43,4 +43,6 @@ int get_num_from_user_input(char user_input[]);
 
 bool is_number(char string_number[]);
 
+bool array_contains_idx(int arr[], int size, int idx);
+
 #endif

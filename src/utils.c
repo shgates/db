@@ -91,3 +91,12 @@ bool is_number(char string_number[]) {
     }
     return true;
 }
+
+bool array_contains_idx(int arr[], int size, int idx) {
+    for (int i = 0; i < size; i++) {
+        if (arr[i] == idx) {
+            return true;
+        }
+    }
+    return false;
+}

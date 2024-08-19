@@ -518,10 +518,109 @@ enum Result search_data(
     printf("Coluna a ser pesquisada %s\n", col_name);
     printf("Nome da tabela %s %s\n", table_name, t.name);
 
+    double num_value = atof(value);
+
+    int col_idx = 0;
+    for (size_t i = 0; i < t.num_columns; i++) {
+        if (strcmp(col_name, t.columns[i].name) == 0) {
+            col_idx = i;
+            printf(" TEST index %d\n", col_idx);
+        }
+    }
+    int option;
+    while (true) {
+        puts("Selecione a opção de pesquisa:");
+        puts("{1} -> Valores maior que o informado");
+        puts("{2} -> Valores maior ou igual que o informado");
+        puts("{3} -> Valores iguais que o informado");
+        puts("{4} -> Valores menor que o informado");
+        puts("{5} -> Valores maior ou igual que o informado");
+
+        display_user_arrow();
+        scanf("%d", &option);
+
+        if (option >= 1 && option <= 5) {
+            break;
+        }
+    }
+
+    double col_values[t.num_columns];
+
+    get_numerical_values(t.columns[col_idx], t.num_rows, col_values);
+
+    int c = 0;
+    int rows[t.num_rows];
+    switch (option) {
+        case 1:
+            for (size_t i = 0; i < t.num_rows; i++) {
+                if (col_values[i] > num_value) {
+                    rows[c] = i;
+                    c++;
+                }
+            }
+            break;
+        case 2:
+            for (size_t i = 0; i < t.num_rows; i++) {
+                if (col_values[i] >= num_value) {
+                    rows[c] = i;
+                    c++;
+                }
+            }
+            break;
+        case 3:
+            for (size_t i = 0; i < t.num_rows; i++) {
+                if (col_values[i] == num_value) {
+                    rows[c] = i;
+                    c++;
+                }
+            }
+            break;
+        case 4:
+            for (size_t i = 0; i < t.num_rows; i++) {
+                if (col_values[i] < num_value) {
+                    rows[c] = i;
+                    c++;
+                }
+            }
+            break;
+        case 5:
+            for (size_t i = 0; i < t.num_rows; i++) {
+                if (col_values[i] <= num_value) {
+                    rows[c] = i;
+                    c++;
+                }
+            }
+            break;
+    }
+
+    // printa tabela
+
+    sprintf(FILE_PATH, "./db/%s.txt", table_name);
+
+    FILE* file = fopen(FILE_PATH, "r");
+
+    if (file == NULL) {
+        printf("Erro ao ler tabela %s", table_name);
+        return ERROR;
+    }
+
+    char* table_data = malloc(sizeof(char) * MAX_INPUT);
+
+    printf("\nDados da tabela %s\n\n", table_name);
+
+    int count = 0;
+    while (fgets(table_data, (MAX_INPUT + 1), file)) {
+        if (count == 0 || array_contains_idx(rows, c, count - 1)) {
+            printf("%s", table_data);
+            memset(table_data, 0, MAX_INPUT + 1);
+        }
+        count++;
+    }
+    free(table_data);
+    fclose(file);
+
     return SUCCESS;
 }
-
-int list_tables_with_count() { return 5; }
 
 bool primary_key_exists(struct Table* t, unsigned int pk) {
     for (size_t i = 0; i < t->num_rows; i++) {
@@ -539,4 +638,28 @@ bool column_exist(char column_name[], struct Table t) {
         }
     }
     return false;
+}
+
+void get_numerical_values(
+    struct Column col, unsigned int num_rows, double* data) {
+    if (col.type == UINT) {
+        for (size_t i = 0; i < num_rows; i++) {
+            data[i] = (double)col.data_uint[i];
+        }
+    }
+    else if (col.type == INT) {
+        for (size_t i = 0; i < num_rows; i++) {
+            data[i] = (double)col.data_int[i];
+        }
+    }
+    else if (col.type == FLOAT) {
+        for (size_t i = 0; i < num_rows; i++) {
+            data[i] = (double)col.data_float[i];
+        }
+    }
+    else if (col.type == DOUBLE) {
+        for (size_t i = 0; i < num_rows; i++) {
+            data[i] = col.data_double[i];
+        }
+    }
 }
