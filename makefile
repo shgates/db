@@ -8,7 +8,15 @@ SOURCE_FILES = $(wildcard $(SRC_DIR)/*.c)
 
 OBJECTS = $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(SOURCE_FILES))
 
-OS = $(shell uname)
+UNAME_S = $(shell uname)
+
+ifeq ($(UNAME_S), Linux)
+	OS_IS_UNIX := true
+else ifeq ($(UNAME_S), Darwin)
+	OS_IS_UNIX := true
+else
+	OS_IS_UNIX := false
+endif
 
 .PHONY: all clean cleandb
 
@@ -24,17 +32,18 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-ifeq ($(OS), Windows_NT)
-	rmdir /S /Q $(BUILD_DIR) $(EXECUTABLE)
-else 
+ifeq ($(OS_IS_UNIX), true)
 	rm -rf $(BUILD_DIR) $(EXECUTABLE)
+else 
+	rmdir /S /Q $(BUILD_DIR) $(EXECUTABLE)
+
 endif
 
 cleandb:
-ifeq ($(OS), Windows_NT)
-	rmdir /S /Q  db/*
-else 
+ifeq ($(OS_IS_UNIX), true)
 	rm -rf db/*
+else 
+	rmdir /S /Q  db/*
 endif
 
 	if [ ! -d "db" ]; then \

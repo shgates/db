@@ -13,6 +13,7 @@
 #define MAX_PATH_SIZE 1000
 #define MAX_TABLE_QUANTITY 100
 #define MAX_TABLE_NAME_SIZE 100
+#define MAX_INPUT 1024
 
 // Formatação de entrada (ex: fscanf) do arquivo listoftables
 // (Nome, Numero de linhas, Numero de Colunas)
