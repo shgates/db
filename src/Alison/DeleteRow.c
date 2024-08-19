@@ -128,23 +128,5 @@ Chave| int A | char B | float C
 98|    4      PIPOCA    1.4175
 97|    4      PIPOCA    1.4175
 
-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-===-=-
-
-Chave| int A | char B | float C
-
-99   |   4     PIPOCA   1.4175
-
-
-Problema: Se a leitura para em cima de um dos numeros da chave primaria. S passar numero de caracteres que a linha da tabela abarca.
-Uma fomra de fazer isso é saber a quantidade de caracteres cada coluna vai abarcar e de alguma forma recuperar essa informação cada vez que a tabela
-for usada. 
-
-i) Leitura deve começar pelo primeiro caractere de informação.
-
-
-99|    4      PIPOCA    1.4175
-99|    4      PIPOCA    1.4175
-99|    4      PIPOCA    1.4175
-
 */
 
