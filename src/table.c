@@ -497,34 +497,12 @@ enum Result list_data(char table_name[]) {
 
 enum Result search_data(
     char table_name[], char col_name[], char value[], struct Table t) {
-    /*
-     * 1 - Usuário deverá informar o nome da tabela onde realizará a pesquisa
-     * ( Checar tabela com a variavel table_name )
-     * 2 - Sistema deverá fornecer as colunas disponíveis na tabela o usuário
-     * deverá selecionar uma delas ( Ler as colunas no txt e listar para o
-     * usuario ) 3- Sistema deverá solicitar o valor para pesquisar,
-     * disponibilizando algumas opções
-     * ( Ler o valor para pesquisa do usuário, a principio um valor double )
-     * i- valores maior que o valor informado
-     * ii- valores maior ou igual que o valor informado
-     * iii- valores igual o valor informado
-     * iv-valores menor que o valor informado
-     * v- valores menor ou igual que o valor informado
-     * vi- valores próximo ao valor informado (se aplica apenas se a coluna for
-     * do tipo string) ( Fazer depois que a pesquisa de valores numeros estiver
-     * funcionando )
-     * */
-    printf("Valor a ser pesquisado %s\n", value);
-    printf("Coluna a ser pesquisada %s\n", col_name);
-    printf("Nome da tabela %s %s\n", table_name, t.name);
-
     double num_value = atof(value);
 
     int col_idx = 0;
     for (size_t i = 0; i < t.num_columns; i++) {
         if (strcmp(col_name, t.columns[i].name) == 0) {
             col_idx = i;
-            printf(" TEST index %d\n", col_idx);
         }
     }
     int option;
